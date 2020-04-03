@@ -15,14 +15,21 @@ class ReadConfig(object):
 
     def get_http(self, name):
         re = self.conf.get('HTTP', name)
-        print(re)
         return re
 
     def get_data(self, name):
-        re = self.conf.get(name)
+        re = self.conf.get('DATA',name)
+
+    def get_mail(self, name):
+        re = self.conf.get('EMAIL', name)
+        return re
 
 if __name__ == '__main__':
     rc = ReadConfig()
+    sender = rc.get_mail('sender')
+    # print(sender)
+    rc.get_http('baseurl')
+    rc.get_http('port')
 
 
 

@@ -4,16 +4,22 @@ import requests
 class ConfigHttp(object):
 
     def get(self, url, param):
-        r = requests.get(url=url, params=eval(param))
-        return r
+        r = requests.get(url=url, params= eval(param))
+        status_code = r.status_code
+        error_code = r.json()['errorCode']
+
+        return status_code,error_code
 
 
     def post(self, url, param):
         r = requests.post(url=url, data= eval(param))
-        return r
+        # print(r)
+        status_code = r.status_code
+        error_code = r.json()['errorCode']
+        return status_code, error_code
 
 
-    def getRequest(self, url, method,param):
+    def run(self, url, method,param):
         if method == 'get':
             return self.get(url, param)
         elif method == 'post':

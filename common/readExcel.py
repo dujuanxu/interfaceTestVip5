@@ -28,8 +28,6 @@ class readExcel(object):
         data = []
         for n in range(1, nrows):
             row_value = sheet.row_values(n)
-            # print(row_value)
-            # print("========")
             print(row_value)
             data.append(row_value)
         return data

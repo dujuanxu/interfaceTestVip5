@@ -27,7 +27,6 @@ from common.writeExcel import WriteExcel
 re = readExcel()
 test_data = re.read()
 rc = ReadConfig()
-cf = ConfigHttp()
 wr = WriteExcel()
 
 @ddt
@@ -46,18 +45,22 @@ class testCase(unittest.TestCase):
         print('param:',param)
         print('expect:', expect)
 
-        re = cf.getRequest(urlstr,method, param)
-        real = re.json()['errorCode']
+        #调用run方法，进行接口请求
+        cf = ConfigHttp()
+        status_code,real = cf.run(urlstr,method, param)
         print('id:', id, "real:", real, "expect:", expect)
+
+        #断言每个接口的返回结果
         try:
-            status = self.assertEqual(real, eval(expect))
-            print("status:=================", status)
+            if status_code == 200:
+                status = self.assertEqual(real, eval(expect))
+                print("status:=================", status, type(status_code))
 
         except BaseException as m :
             print(urlstr)
             print(param)
             # print('id:', id, "real:",real,"expect:", expect)
-            print(re.text)
+            # print(re.text)
             status = 'Error'
         finally:
             pass
@@ -65,13 +68,6 @@ class testCase(unittest.TestCase):
                 wr.writeData(int(id), int(real), 'sucess')
             else:
                 wr.writeData(int(id), int(real), 'fail')
-
-
-
-
-
-
-
 
     # 2 - 根据接口测试数据，进行请求
     # 2.1 - get请求 - get方法
